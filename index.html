@@ -24,7 +24,7 @@
       <div class="header-content">
 
         <!-- logo -->
-        <div class="header__logo">QPICK</div>
+        <div class="header__logo js-logo">QPICK</div>
 
         <!-- icons -->
         <ul class="header__icons">
@@ -47,233 +47,67 @@
 
 
   <!-- M A I N -->
-  <main>
+  <main class="js-main">
 
-    <!-- G O O D S -->
-    <section class="goods">
+
+    <!-- B A S K E T - B A S K E T   P A G E-->
+    <section class="basket">
       <div class="container">
-        <h2 class="section-title">Наушники</h2>
-        <div class="cards">
+        <h2 class="section-title basket__title">Корзина</h2>
 
+        <div class="basket-content">
 
-          <!-- card 1 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good1-1.png" alt="earphones" class="card__img">
-            </div>
+          <!-- B A S K E T - G O O D S -->
+          <div class="basket__cards">
 
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple BYZ S852I</div>
-                <div class="card__price">
-                  <div class="card__price-new">2927 ₽</div>
-                  <div class="card__price-old">3527 ₽</div>
+            
+            <!-- basket card -->
+            <div class="basket__card">
+
+              <!-- delete -->
+              <div class="delete"><img src="./assets/svg/delete.svg" alt="delete"></div>
+
+              <!-- basket row1 -->
+              <div class="basket__card__good">
+                <div class="basket__card__picture">
+                  <img src="./assets/images/good1-1.png" alt="earphones" class="basket__card__img">
+                </div>
+
+                <div class="basket__card__info">
+                  <div class="basket__card__title">Apple BYZ S852I</div>
+                  <div class="basket__card__price-one">2 927 ₽</div>
                 </div>
               </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.7</div>
+
+              <!-- basket row2 -->
+              <div class="basket__card__total">
+                <div class="basket__card__amount">
+                  <div class="minus"><img src="./assets/svg/minus.svg" alt="minus"></div>
+                  <div class="card-amount">1</div>
+                  <div class="plus"><img src="./assets/svg/plus.svg" alt="plus"></div>
                 </div>
-                <div class="card__buy js-buy">Купить</div>
+                
+                <div class="basket__card__price-total">2 927 ₽</div>
               </div>
             </div>
+
+
           </div>
 
 
-          <!-- card 2 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good1-2.png" alt="earphones" class="card__img">
+          <!-- T O T A L -->
+          <div class="basket__total">
+            <div class="total-info">
+              <div>ИТОГО</div>
+              <div js-total>₽ 2 927</div>
             </div>
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple EarPods</div>
-                <div class="card__price">2327 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.5</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
+            <button class="btn-order">Перейти к оформлению</button>
           </div>
-
-
-          <!-- card 3 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good1-3.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple EarPods</div>
-                <div class="card__price">2327 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.5</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- card 4 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good1-1.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple BYZ S852I</div>
-                <div class="card__price">2927 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.7</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- card 5 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good1-2.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple EarPods</div>
-                <div class="card__price">2327 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.5</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- card 6 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good1-3.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple EarPods</div>
-                <div class="card__price">2327 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.5</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
 
         </div>
-      </div>
+      </div>     
     </section>
-    <!-- / G O O D S -->
-
-
-    <!-- G O O D S 2 -->
-    <section class="goods">
-      <div class="container">
-        <h2 class="section-title">Беспроводные наушники</h2>
-        <div class="cards">
-
-
-          <!-- card 2 - 1 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good2-1.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">Apple AirPods</div>
-                <div class="card__price">9527 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.7</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- card 2 - 2 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good2-2.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">GERLAX GH-04</div>
-                <div class="card__price">6527 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.7</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
-          
-          <!-- card 2 - 3 -->
-          <div class="card">
-            <div class="card__picture">
-              <img src="./assets/images/good2-3.png" alt="earphones" class="card__img">
-            </div>
-
-            <div class="card__info">
-              <div class="card__row">
-                <div class="card__title">BOROFONE BO4</div>
-                <div class="card__price">7527 ₽</div>
-              </div>
-              <div class="card__row">
-                <div class="card__stars">
-                  <div class="card__star"><img src="./assets/svg/star.svg" alt="star"></div> 
-                  <div class="card__rate">4.7</div>
-                </div>
-                <div class="card__buy js-buy">Купить</div>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
-      </div>
-    </section>
-    <!-- / G O O D S 2 -->
-
+    
 
   </main>
   <!-- / M A I N -->
@@ -285,7 +119,7 @@
       <div class="footer-content">
 
         <!-- logo -->
-        <div class="footer__logo">QPICK</div>
+        <div class="footer__logo js-logo">QPICK</div>
 
         <!-- links -->
         <div class="footer__links">
