@@ -1,31 +1,17 @@
-// элемент main куда при роутинге будут вставляться
-// или страница магазина или страница корзины
+// в элемент main помот вставим одну из двух страниц
+// страница магазина или страница корзины
 const elMain = document.querySelector('.js-main');
 
-// навигация на первую страницу
-const toMain = document.querySelectorAll('.js-logo');
-if (toMain) {
-  for (let i = 0; i < toMain.length; i++) {
-    toMain[i].addEventListener('click', (e) => {
-      e.preventDefault();
-      elMain.innerHTML = '';
-      elMain.append(goods, goods2);
-    })
-  }
-}
+// у значка корзины потом вставим количество товара в корзине
+const elAmount = document.querySelector('.js-amount');
+
+// при добавлени товара на страницу ему присваивается id
+let id = 0;
 
 
-// навигация на страницу корзины
-const toBasket = document.querySelectorAll('.js-to-basket');
-if (toBasket) {
-  for (let i = 0; i < toBasket.length; i++) {
-    toBasket[i].addEventListener('click', (e) => {
-      e.preventDefault();
-      elMain.innerHTML = '';
-      elMain.append(elBasket);
-    })
-  }
-}
+/**************************************************************
+Статические данные
+**************************************************************/
 
 
 // массив с товарами - наушники
@@ -91,7 +77,6 @@ const headphones2 = [
     rate: 4.5,
   },
 ];
-
 
 
 /**************************************************************
@@ -171,6 +156,9 @@ function createCard(item) {
   const elCard = document.createElement('div');
   elCard.className = 'card';
   elCard.append(elCardPicture, elCardInfo);
+  elCard.product = structuredClone(item);
+  elCard.product.id = id++;
+  elCard.product.amount = 1;
 
   // возвращаем карточку товара
   return elCard;
@@ -202,8 +190,8 @@ function createGoods(cardsItem, titleItem) {
   // создаем секцию товаров
   const elGoods = document.createElement('section');
   elGoods.className = 'goods';
-  elGoods.appendChild(elShopContainer);  
-  
+  elGoods.appendChild(elShopContainer);
+
   // возвращаем секцию с товарами
   return elGoods;
 
@@ -211,7 +199,6 @@ function createGoods(cardsItem, titleItem) {
 /*******************************
 / функция createGoods возвращает секцию с товарами
 *******************************/
-
 
 // создаем карточки товаров Наушники
 let cards = headphones.map(el => createCard(el));
@@ -226,6 +213,7 @@ let goods = createGoods(cards, 'Наушники');
 let goods2 = createGoods(cards2, 'Беспроводные наушники');
 
 elMain.append(goods, goods2);
+elMain.addEventListener('click', mainClick);
 
 
 
@@ -242,7 +230,7 @@ elTotalName.innerHTML = 'ИТОГО';
 // создаем цену
 const elTotalPrice = document.createElement('div');
 elTotalPrice.className = 'js-total'
-elTotalPrice.innerHTML = '₽ 2 927';
+elTotalPrice.innerHTML = '₽ 0';
 
 // создаем тотал инфо
 const elTotalInfo = document.createElement('div');
@@ -261,85 +249,101 @@ elBasketTotal.append(elTotalInfo, elBtnOrder)
 
 
 // создаем basket card
-// создаем кнопку delete
-const elDeleteImg = document.createElement('img');
-elDeleteImg.src = './assets/svg/delete.svg';
-elDeleteImg.alt = 'delete';
-const elDelete = document.createElement('div');
-elDelete.className = 'delete';
-elDelete.appendChild(elDeleteImg);
 
-// создаем картинку товара в корзине
-const elBasketCardImg = document.createElement('img');
-elBasketCardImg.src = './assets/images/good1-1.png';
-elBasketCardImg.alt = 'earphones';
-elBasketCardImg.className = 'basket__card__img';
-const elBasketCardPicture = document.createElement('div');
-elBasketCardPicture.className = 'basket__card__picture';
-elBasketCardPicture.appendChild(elBasketCardImg);
+/*******************************
+функция createBasketCard возвращает карточку товара в корзине
+*******************************/
+function createBasketCard(item) {
+  // кнопка delete
+  const elDeleteImg = document.createElement('img');
+  elDeleteImg.src = './assets/svg/delete.svg';
+  elDeleteImg.alt = 'delete';
+  elDeleteImg.className = 'js-delete';
+  const elDelete = document.createElement('div');
+  elDelete.className = 'delete';
+  elDelete.appendChild(elDeleteImg);
+  // elDelete.addEventListener('click', btnDeleteClick);
 
-// создаем информацию о товаре в корзине
-const elBasketCardTitle = document.createElement('div');
-elBasketCardTitle.className = 'basket__card__title';
-elBasketCardTitle.innerHTML = 'Apple BYZ S852I';
-const elBasketCardPrice = document.createElement('div');
-elBasketCardPrice.className = 'basket__card__price-one';
-elBasketCardPrice.innerHTML = '2 927 ₽';
-const elBasketCardInfo = document.createElement('div');
-elBasketCardInfo.className = 'basket__card__info';
-elBasketCardInfo.append(elBasketCardTitle, elBasketCardPrice);
+  // картинка товара
+  const elBasketCardImg = document.createElement('img');
+  elBasketCardImg.src = item.img;
+  elBasketCardImg.alt = 'earphones';
+  elBasketCardImg.className = 'basket__card__img';
+  const elBasketCardPicture = document.createElement('div');
+  elBasketCardPicture.className = 'basket__card__picture';
+  elBasketCardPicture.appendChild(elBasketCardImg);
 
-// создаем первый ряд в busket card
-const elBasketCardGood = document.createElement('div');
-elBasketCardGood.className = 'basket__card__good';
-elBasketCardGood.append(elBasketCardPicture, elBasketCardInfo);
+  // информация о товаре
+  const elBasketCardTitle = document.createElement('div');
+  elBasketCardTitle.className = 'basket__card__title';
+  elBasketCardTitle.innerHTML = item.title;
+  const elBasketCardPrice = document.createElement('div');
+  elBasketCardPrice.className = 'basket__card__price-one';
+  elBasketCardPrice.innerHTML = `${spaceDigit(item.price)} ₽`;
+  const elBasketCardInfo = document.createElement('div');
+  elBasketCardInfo.className = 'basket__card__info';
+  elBasketCardInfo.append(elBasketCardTitle, elBasketCardPrice);
 
-// создаем блок изменения количества товаров
-// создаем минус
-const elMinusImg = document.createElement('img');
-elMinusImg.src = './assets/svg/minus.svg';
-elMinusImg.alt = 'minus';
-const elMinus = document.createElement('div');
-elMinus.className = 'minus';
-elMinus.appendChild(elMinusImg);
+  // первый ряд
+  const elBasketCardGood = document.createElement('div');
+  elBasketCardGood.className = 'basket__card__good';
+  elBasketCardGood.append(elBasketCardPicture, elBasketCardInfo);
 
-// создаем количество
-const elCardAmount = document.createElement('div');
-elCardAmount.className = 'amount';
-elCardAmount.innerHTML = '1';
+  // минус
+  const elMinusImg = document.createElement('img');
+  elMinusImg.src = './assets/svg/minus.svg';
+  elMinusImg.alt = 'minus';
+  elMinusImg.className = 'js-minus';
+  const elMinus = document.createElement('div');
+  elMinus.className = 'minus';
+  elMinus.appendChild(elMinusImg);
 
-// создаем плюс
-const elPlusImg = document.createElement('img');
-elPlusImg.src = './assets/svg/plus.svg';
-elPlusImg.alt = 'plus';
-const elPlus = document.createElement('div');
-elPlus.className = 'plus';
-elPlus.appendChild(elPlusImg);
+  // количество
+  const elCardAmount = document.createElement('div');
+  elCardAmount.className = 'amount';
+  elCardAmount.innerHTML = item.amount;
 
-// создаем элемент изменения количества товаров
-const elBasketCardAmount = document.createElement('div');
-elBasketCardAmount.className = 'basket__card__amount';
-elBasketCardAmount.append(elMinus, elCardAmount, elPlus);
+  // плюс
+  const elPlusImg = document.createElement('img');
+  elPlusImg.src = './assets/svg/plus.svg';
+  elPlusImg.alt = 'plus';
+  elPlusImg.className = 'js-plus';
+  const elPlus = document.createElement('div');
+  elPlus.className = 'plus';
+  elPlus.appendChild(elPlusImg);
 
-// создаем общую цену на карточке в корзине
-const elBasketCardPriceTotal = document.createElement('div');
-elBasketCardPriceTotal.className = 'basket__card__price-total';
-elBasketCardPriceTotal.innerHTML = '2 927 ₽';
+  // выбор количества товаров
+  const elBasketCardAmount = document.createElement('div');
+  elBasketCardAmount.className = 'basket__card__amount';
+  elBasketCardAmount.append(elMinus, elCardAmount, elPlus);
 
-// создаем второй ряд в busket card
-const elBasketCardTotal = document.createElement('div');
-elBasketCardTotal.className = 'basket__card__total';
-elBasketCardTotal.append(elBasketCardAmount, elBasketCardPriceTotal);
+  // итоговая цена на карточке
+  const elBasketCardPriceTotal = document.createElement('div');
+  elBasketCardPriceTotal.className = 'basket__card__price-total';
+  elBasketCardPriceTotal.innerHTML = `${spaceDigit(item.price * item.amount)} ₽`;
 
-// создаем элемент basket card
-const elBasketCard = document.createElement('div');
-elBasketCard.className = 'basket__card';
-elBasketCard.append(elDelete, elBasketCardGood, elBasketCardTotal);
+  // второй ряд
+  const elBasketCardTotal = document.createElement('div');
+  elBasketCardTotal.className = 'basket__card__total';
+  elBasketCardTotal.append(elBasketCardAmount, elBasketCardPriceTotal);
+
+  // создаем элемент basket card
+  const elBasketCard = document.createElement('div');
+  elBasketCard.className = 'basket__card';
+  elBasketCard.append(elDelete, elBasketCardGood, elBasketCardTotal);
+  elBasketCard.product = item;
+
+  // возвращаем карточку товара
+  return elBasketCard;
+}
+/*******************************
+/ функция createBasketCard возвращает карточку товара в корзине
+*******************************/
+
 
 // создаем basket cards
 const elBasketCards = document.createElement('div');
 elBasketCards.className = 'basket__cards';
-elBasketCards.appendChild(elBasketCard);
 
 // создаем basket content
 const elBasketContent = document.createElement('div');
@@ -363,34 +367,296 @@ elBasket.className = 'basket';
 elBasket.appendChild(elBasketContainer);
 
 
+/*******************************
+функция showInBasket показывает товар в корзине
+*******************************/
+function showInBasket(item) {
+  elBasketCards.appendChild(item);
+}
+/*******************************
+/ функция showInBasket показывает товар в корзине
+*******************************/
 
-// добавить товар в корзину
-const btnBuy = document.querySelectorAll('.js-buy');
-const elAmount = document.querySelector('.js-amount');
-if (btnBuy) {
-  for (let i = 0; i < btnBuy.length; i++) {
-    btnBuy[i].addEventListener('click', (e) => {
+
+// создаем карточку товара в корзине
+//let basketCard = createBasketCard(headphones[0]);
+//showInBasket(basketCard);
+
+
+/**************************************************************
+Обработка действий пользователя
+**************************************************************/
+
+
+// навигация на первую страницу
+const toMain = document.querySelectorAll('.js-logo');
+if (toMain) {
+  for (let i = 0; i < toMain.length; i++) {
+    toMain[i].addEventListener('click', (e) => {
       e.preventDefault();
-      amount = sessionStorage.getItem('amount');
-      amount++;
-      sessionStorage.setItem('amount', amount);
-      elAmount.innerText = amount;
+      elMain.innerHTML = '';
+      elMain.append(goods, goods2);
     })
   }
 }
 
 
+// навигация на страницу корзины
+const toBasket = document.querySelectorAll('.js-to-basket');
+if (toBasket) {
+  for (let i = 0; i < toBasket.length; i++) {
+    toBasket[i].addEventListener('click', (e) => {
+      e.preventDefault();
+      elMain.innerHTML = '';
+      elMain.append(elBasket);
+    })
+  }
+}
+
+
+/**************************************************************
+Вспомогательные функции
+**************************************************************/
+
+
+// запись числа с пробелом между тысячями
+function spaceDigit(num) {
+  if (num < 1000) {
+    return num;
+  }
+  let thousand = Math.floor(num / 1000);
+  let unit = (num % 1000).toString().padStart(3, '0');
+  return `${thousand} ${unit}`;
+}
+
+
+/**************************************************************
+делегируем собитие клик по секции main
+**************************************************************/
+
+function mainClick(e) {
+  // обработаем нажатие на кнопку Купить
+  if (e.target.classList.contains('js-buy')) {
+    btnBuyClick(e);
+  } else if (e.target.classList.contains('js-delete')) {
+    btnDeleteClick(e);
+  } else if (e.target.classList.contains('js-minus')) {
+    btnMinusClick(e);
+  } else if (e.target.classList.contains('js-plus')) {
+    btnPlusClick(e);
+  }
+}
+
+/*********************************
+логика добавления товара в корзину
+*********************************/
+// обработаем нажатие на кнопку Купить
+function btnBuyClick(e) {
+  let item = e.target.closest('.card').product;
+  addToStorage(item);
+}
+
+// добавление одного товара
+function addToStorage(item) {
+  goodsInBasket = JSON.parse(sessionStorage.getItem('goods'));
+
+  // если товар с таким id уже есть в корзине
+  // то увеличиваем его количество на 1
+  let currentItem = goodsInBasket.find(el => el.id === item.id);
+  if (currentItem) {
+    currentItem.amount++;
+  } else {
+    goodsInBasket.push(item);
+  }
+
+  elBasketCards.innerHTML = '';
+  goodsInBasket.forEach(el => showInBasket(createBasketCard(el)));
+  sessionStorage.setItem('goods', JSON.stringify(goodsInBasket));
+  // увеличим количество товаров в корзине
+  increaseCounter();
+
+  // увеличим итоговую цену товаров в корзине
+  increaseTotal(item.price);
+}
+
+// функция increaseCounter увеличивает счетчик товаров в корзине
+function increaseCounter() {
+  amount = sessionStorage.getItem('amount');
+  amount++;
+  sessionStorage.setItem('amount', amount);
+  elAmount.innerText = amount;
+}
+
+// функция increaseTotal увеличивает сумму товаров в корзине
+function increaseTotal(price) {
+  total = sessionStorage.getItem('total');
+  total = +total + +price;
+  sessionStorage.setItem('total', total);
+  elTotalPrice.innerHTML = `₽ ${spaceDigit(total)}`;
+}
+
+
+/*********************************
+логика кнопок плюс, минус, удалить в карточке товара в корзине
+*********************************/
+// обработаем нажатие на кнопку Delete
+function btnDeleteClick(e) {
+  let item =  e.target.closest('.basket__card').product;
+  removeBasketCard(item);
+}
+
+// обработаем нажатие на кнопку Минус
+function btnMinusClick(e) {
+  let item =  e.target.closest('.basket__card').product;
+  removeFromStorage(item);
+}
+
+// обработаем нажатие на кнопку Плюс
+function btnPlusClick(e) {
+  let item =  e.target.closest('.basket__card').product;
+  addToStorage(item);
+}
+
+// удаление одного товара
+function removeFromStorage(item) {
+  goodsInBasket = JSON.parse(sessionStorage.getItem('goods'));
+
+  // находим товар с таким id и уменьшаем его количество на 1
+  let currentItem = goodsInBasket.find(el => el.id === item.id);
+  if (currentItem.amount > 1) {
+    currentItem.amount--;
+    elBasketCards.innerHTML = '';
+    goodsInBasket.forEach(el => showInBasket(createBasketCard(el)));
+    sessionStorage.setItem('goods', JSON.stringify(goodsInBasket));
+    // уменьшим количество товаров в корзине
+    decreaseCounter();
+    // уменьшим итоговую цену товаров в корзине
+    decreaseTotal(item.price);
+  } else {
+    removeBasketCard(item);
+  }
+}
+
+function removeBasketCard(item) {
+  // уменьшим счетчик товаров в корзине
+  amount = sessionStorage.getItem('amount');
+  amount -= item.amount;
+  sessionStorage.setItem('amount', amount);
+  elAmount.innerText = amount;
+
+  // уменьшим сумму товаров в корзине
+  total = sessionStorage.getItem('total');
+  total = +total - (item.amount * item.price);
+  sessionStorage.setItem('total', total);
+  elTotalPrice.innerHTML = `₽ ${spaceDigit(total)}`;
+
+  // удаляем товар из корзины
+  let index = goodsInBasket.findIndex(el => {
+    return el.id === item.id;
+  })
+  goodsInBasket.splice(index, 1);
+  elBasketCards.innerHTML = '';
+  goodsInBasket.forEach(el => showInBasket(createBasketCard(el)));
+  sessionStorage.setItem('goods', JSON.stringify(goodsInBasket));
+}
+
+// функция decreaseCounter уменьшает счетчик товаров в корзине
+function decreaseCounter() {
+  amount = sessionStorage.getItem('amount');
+  amount--;
+  sessionStorage.setItem('amount', amount);
+  elAmount.innerText = amount;
+}
+
+// функция decreaseTotal уменьшает сумму товаров в корзине
+function decreaseTotal(price) {
+  total = sessionStorage.getItem('total');
+  total = +total - price;
+  sessionStorage.setItem('total', total);
+  elTotalPrice.innerHTML = `₽ ${spaceDigit(total)}`;
+}
+
+/**************************************************************
+Открытие страницы приложения
+**************************************************************/
+
+
 /*      *     *     *     *
-start
 при запуске приложения Session Storage пуст
+поэтому надо изначально поставить
+количество товаров в корзине amount = 0
+итоговую цену товаров в корзине total = 0
+массив товаров в корзине goodsInBasket = []
 *     *     *     *     */
 // количество товаров в корзине
 let amount;
 // начальное значение количества товаров в корзине
 if (!sessionStorage.getItem('amount')) {
   amount = 0;
-} else {
-  amount = sessionStorage.getItem('amount');
+  sessionStorage.setItem('amount', amount);
 }
-// покажем начальное значение количества товаров в корзине
+
+// итоговая цена товаров в корзине
+let total;
+// начальное значение цены товаров в корзине
+if (!sessionStorage.getItem('total')) {
+  total = 0;
+  sessionStorage.setItem('total', total);
+}
+
+// массив товаров в корзине
+let goodsInBasket;
+// начальное значение количества товаров в корзине
+if (!sessionStorage.getItem('goods')) {
+  goodsInBasket = [];
+  sessionStorage.setItem('goods', JSON.stringify(goodsInBasket));
+}
+
+
+/**************************************************************
+Обновление страницы приложения
+**************************************************************/
+/*      *     *     *     *
+при обновлении приложения Session Storage заполнен
+поэтому надо взять из него
+количество товаров в корзине amount
+итоговую цену товаров в корзине total
+массив товаров в корзине goodsInBasket
+*     *     *     *     */
+amount = sessionStorage.getItem('amount');
+total = sessionStorage.getItem('total');
+goodsInBasket = JSON.parse(sessionStorage.getItem('goods'));
+
+// выведем количество товаров в корзине
 elAmount.innerText = amount;
+// выведем итоговую цену товаров в корзине
+elTotalPrice.innerHTML = `₽ ${spaceDigit(total)}`;
+// создадим и выведем карточки товаров в корзине
+goodsInBasket.forEach(el => showInBasket(createBasketCard(el)));
+
+
+
+/*
+осталось сделать
++ 1. при увеличении количества товара в карточке увеличивать итоговую сумму в карточке
+
++ 2. обработка клика по плюсу на карточке в корзине
+количесвто товара на карточке должно увеличиться на 1
+количество товара в корзине должно увеличиться на 1
+итоговая сумма в карточке должна увеличиваться
+итоговая сумма в корзине должна увеличиваться
+
++ 3. обработка клика по минусу на карточке в корзине
+если на карточке больше 1 товара
+количесвто товара на карточке должно уменьшиться на 1
+количество товара в корзине должно уменьшиться на 1
+итоговая сумма в карточке должна уменьшиться
+итоговая сумма в корзине должна уменьшиться
+если оставался один товар то переходим к удалению товара
+
+4. обработка клика по иконке удалить на карточке в корзине
+количество товара в корзине должно уменьшиться на число товаров в карточке
+итоговая сумма в корзине должна уменьшиться на итоговую сумму в карточке
+карточка должна удалиться
+
+*/

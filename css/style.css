@@ -248,12 +248,9 @@ MAIN - BASKET
   margin-top: 13px;
 }
 
-.basket__cards {
-  margin-bottom: 20px;
-}
-
 .basket__card {
   position: relative;
+  margin-bottom: 20px;
   padding: 18px;
   width: 633px;
   height: 218px;
@@ -274,7 +271,8 @@ MAIN - BASKET
 }
 
 .basket__card__img {
-  width: 146px;
+  max-width: 146px;
+  max-height: 136px;
 }
 
 .basket__card__info {
